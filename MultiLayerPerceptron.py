@@ -87,9 +87,10 @@ for epoch in range(num_epochs):
     accs.append(running_acc)
     print("epoch:{}, loss:{}, acc:{}".format(epoch, running_loss, running_acc))
 
-# グラフ表示のため、GPU→CPUにTensorを転送
-losses = losses.to('cpu').detach().numpy().copy()
-accs = accs.to('cpu').detach().numpy().copy()
+if dvice == "CUDA":
+    # グラフ表示のため、GPU→CPUにTensorを転送
+    losses = losses.to('cpu').detach().numpy().copy()
+    accs = accs.to('cpu').detach().numpy().copy()
 
 plt.plot(losses)
 plt.show()
