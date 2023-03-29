@@ -84,29 +84,31 @@ for epoch in range(num_epochs):
     running_loss /= len(train_dataloader)
     running_acc /= len(train_dataloader)
     losses.append(running_loss)
+    running_acc = running_acc.detach().cpu().numpy()    # グラフ表示のため、GPU→CPUにTensorを転送
     accs.append(running_acc)
     print("epoch:{}, loss:{}, acc:{}".format(epoch, running_loss, running_acc))
-
-if dvice == "CUDA":
-    # グラフ表示のため、GPU→CPUにTensorを転送
-    losses = losses.to('cpu').detach().numpy().copy()
-    accs = accs.to('cpu').detach().numpy().copy()
 
 plt.plot(losses)
 plt.show()
 plt.plot(accs)
 plt.show()
 
-# 次の推論検証用にGPUに再転送する
-losses = losses.to(device)
-accs = accs.to(device)
-
 # 検証
 train_iter = iter(train_dataloader)
 imgs, labels = next(train_iter)
 print(labels)
 
-imgs_gpu = imgs.view(10, -1).to(device)
+imgs_gpu = imgs.view(100, -1).to(device)
 output = model(imgs_gpu)
 pred = torch.argmax(output, dim=1)
 print(pred)
+
+"""
+# モデルの保存
+params = model.state_dict()
+torch.save(params, "model.prm")
+
+# モデルのロード
+param_load = torch.load("model.prm")
+model.load_state_dict(param_load)
+"""
