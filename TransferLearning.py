@@ -42,24 +42,6 @@ img_permute = np.clip(img_permute, 0, 1)
 plt.imshow(img_permute)
 plt.show()
 
-"""
-# イメージ画像の表示
-def imshow(inp, title=None):
-    inp = inp.numpy().transpose((1, 2, 0))
-    mean = np.array([0.485, 0.456, 0.406])
-    std = np.array([0.229, 0.224, 0.225])
-    inp = std * inp + mean
-    inp = np.clip(inp, 0, 1)
-    plt.imshow(inp)
-    if title is not None:
-        plt.title(title)
-    plt.pause(0.001)
-
-imgs, labels = next(iter(dataloaders['train']))
-out = torchvision.utils.make_grid(imgs)
-imshow(out, title=[class_names[x] for x in labels])
-"""
-
 # resnetモデルの読み込み
 model = models.resnet18(pretrained=True)
 print(model)
